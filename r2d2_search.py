@@ -59,10 +59,10 @@ class HelpR2D2(SearchProblem):
 
 
 # heuristic functions
-    # minimize rock-pressure pad distance
-    def min_rock_pad(state):
-        for rock in state.rock_positions:
-            for
+    # # minimize rock-pressure pad distance
+    # def min_rock_pad(state):
+    #     for rock in state.rock_positions:
+    #         for
 
     # # rock first cost function
     # def rock_first(state):
