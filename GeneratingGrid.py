@@ -3,29 +3,37 @@ class Grid:
 	def __init__(self, m, n, robotPos, teleportalPos, unmovables, rocksPos, pressurePos):
         self.m = m
         self.n = n
-	self.robotPos = robotPos
+		self.robotPos = robotPos
         self.teleportalPos = teleportalPos
-	self.unmovables = unmovables
-	self.rocksPos = rocksPos
-	self.pressurePos = pressurePos
-	
+		self.unmovables = unmovables
+		self.rocksPos = rocksPos
+		self.pressurePos = pressurePos
+
 def GenGrid():
 
+	#Base
 	m = randint(1,10)
 	n = randint(1,10)
+
+	#R2D2
 	robotPos = (randint(0, m-1), randint(0, n-1))
+
+	#Teleportal
 	teleportalPos = (randint(0, m-1), randint(0, n-1))
-	
-	unmovableNum = randint(1,max(m,n))
+
+	#Unmovable Objects
+	unmovableNum = randint(1, max(m,n))
 	unmovablesPos = []
 
 	for i in range(1, unmovableNum):
-		currUnmovable = (randint(0,m-1), randint(0,n-1))
-		while ((currUnmovable in unmovablesPos) or (currUnmovable == teleportalPos)):
-			currUnmovable = (randint(0,m-1), randint(0,n-1))
+		currUnmovable = (randint(0, m-1), randint(0, n-1))
+		#if occupied pick another one
+		while ((currUnmovable in unmovablesPos) or (currUnmovable == teleportalPos) or (currRock == robotPos)):
+			currUnmovable = (randint(0, m-1), randint(0, n-1))
 		unmovablesPos.append(currUnmovable)
 
-	rocksNum = randint(1, max(m,n))
+	#Rocks & Pressure Pads
+	rocksNum = randint(1, max(m,n)) #Same no. of pressure pads
 	rocksPos = []
 	pressurePos = []
 
@@ -35,14 +43,15 @@ def GenGrid():
 
 		while ((currPressure in unmovablesPos) or (currPressure == teleportalPos)):
 			currPressure = (randint(0,m-1), randint(0,n-1))
-		
-		pressurePos.append(currPressure) 
+
+		pressurePos.append(currPressure)
 
 		while ((currRock in unmovablesPos) or (currRock in pressurePos) or (currRock == teleportalPos) or (currRock == robotPos)):
 			currRock = (randint(0,m-1), randint(0,n-1))
-		
-		rocksPos.append(currRock) 
 
+		rocksPos.append(currRock)
+
+	#Testing
 	print("m = ",m)
 	print("n = ", n)
 	print("The robot is at ", robotPos)
@@ -50,6 +59,8 @@ def GenGrid():
 	print("There is unmovable objects at ", unmovablesPos)
 	print("The rocks' positions are ", rocksPos)
 	print("And the pressure pads' positions are ", pressurePos)
+
+	#Generate a grid object
 	return Grid(m, n, robotPos, teleportalPos, unmovablesPos, rocksPos, pressurePos);
 
-GenGrid()
+#GenGrid()
