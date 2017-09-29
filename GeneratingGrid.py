@@ -1,5 +1,14 @@
 from random import *
-
+class Grid:
+	def __init__(self, m, n, robotPos, teleportalPos, unmovables, rocksPos, pressurePos):
+        self.m = m
+        self.n = n
+	self.robotPos = robotPos
+        self.teleportalPos = teleportalPos
+	self.unmovables = unmovables
+	self.rocksPos = rocksPos
+	self.pressurePos = pressurePos
+	
 def GenGrid():
 
 	m = randint(1,10)
@@ -41,6 +50,6 @@ def GenGrid():
 	print("There is unmovable objects at ", unmovablesPos)
 	print("The rocks' positions are ", rocksPos)
 	print("And the pressure pads' positions are ", pressurePos)
-	return;
+	return Grid(m, n, robotPos, teleportalPos, unmovablesPos, rocksPos, pressurePos);
 
 GenGrid()
