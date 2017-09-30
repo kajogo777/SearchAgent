@@ -47,7 +47,7 @@ class HelpR2D2(SearchProblem):
                 rock = self.get_rock(next_position, node.state)
                 if rock > -1: # a rock exists
                     new_rock_position = (next_position[0]+direction[0], next_position[1]+direction[1])
-                    if self.is_obstacle(new_rock_position):
+                    if self.is_obstacle(new_rock_position): # if exists obstacle behind rock
                         continue;
                     else:
                         new_rocks = [i for i in self.rock_positions]
