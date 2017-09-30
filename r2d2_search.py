@@ -44,18 +44,19 @@ class HelpR2D2(SearchProblem):
         for action, cost in self.actions.items():
             for direction in directions:
                 next_position = (node.state.position[0]+direction[0], node.state.position[1]+direction[1])
+                new_rocks = [i for i in self.rock_positions]
                 rock = self.get_rock(next_position, node.state)
                 if rock > -1: # a rock exists
                     new_rock_position = (next_position[0]+direction[0], next_position[1]+direction[1])
                     if self.is_obstacle(new_rock_position): # if exists obstacle behind rock
-                        continue;
+                        continue
                     else:
-                        new_rocks = [i for i in self.rock_positions]
                         new_rocks[rock] = (next_position[0]+direction[0], next_position[1]+direction[1], self.is_pressure_pad(new_rock_position))
-                        new_state = StateR2D2(next_position, new_rocks)
-                        children.append(Node(new_state, node, direction[2], node.depth+1, node.path_cost+self.actions[direction[2]]))
                 elif self.is_obstacle(next_position, node.state): # obstacle, remember rock check redundant
-                    continue;
+                    continue
+                # rock movable or empty cell create new state
+                new_state = StateR2D2(next_position, new_rocks)
+                children.append(Node(new_state, node, direction[2], node.depth+1, node.path_cost+self.actions[direction[2]]))
 
 
 # heuristic functions
