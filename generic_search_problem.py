@@ -49,9 +49,10 @@ def iterative_deepening_search(queue, node_list):
     if len(queue) == 0: # initialize queue magic value and initial state
         root = node_list[0].parent # get root
         initial_l = 1 # set first iterative depth to 1
+        queue.append("$")
         queue.append(root) # add root node to end of queue
         queue.append(initial_l) # add iterative depth to end of queue
-    elif len(queue) == 2 and queue[0].depth == 0 and len(node_list) == 0: # if queue has magic value and saved root only and no expanded nodes
+    elif queue[0] == "$" and len(node_list) == 0: # if queue has magic value at the beginning and no expanded nodes
         return [] # no states left return empty queue
 
     depth_limit = queue[-1]
@@ -60,7 +61,7 @@ def iterative_deepening_search(queue, node_list):
         if node.depth <= depth_limit:
             queue = [node] + queue
 
-    if len(queue) == 2 and queue[0].depth == 0: # if cannot add nodes anymore and queue has only the magic value and root
+    if queue[0] == "$": # if cannot add nodes anymore and queue has the magic value at the beginning
         queue[-1] = depth_limit+1 # increase depth
         queue = [root] + queue # add root to beginning to trigger DFS again
 

@@ -16,8 +16,15 @@ class HelpR2D2(SearchProblem):
         self.actions = {"north": 1, "south": 1, "east": 1, "west": 1}
         mapped = map(lambda x: (x[0],x[1],False) ), rocks)
         self.initial_state = StateR2D2(position, list(mapped))
-        self.goal_test = goal_test
         self.path_cost = path_cost
+
+# goal test function
+    def goal_test(self, state):
+        test = True
+        for rock in state.rock_positions:
+            test = test and rock[2]
+        test = test and (state.position == StateR2D2.portal)
+        return test
 
 # helper methods
     def get_rock(self, position, state):
