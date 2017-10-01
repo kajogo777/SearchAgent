@@ -29,12 +29,42 @@ def general_search(problem, q_function):
 
         if(problem.goal_test(node.state)):
             return node
-
         queue = q_function(queue, problem.state_space(node, problem.actions))
 
 
 
+
 # search strategies
+
+# breadth first search
+def breadth_first_search(queue, node_list):
+    return queue + node_list
+
+# depth first search
+def depth_first_search(queue, node_list):
+    return node_list + queue
+
+# iterative deepening search
+def iterative_deepening_search(queue, node_list):
+    if len(queue) == 0: # initialize queue magic value and initial state
+        root = node_list[0].parent # get root
+        initial_l = 1 # set first iterative depth to 1
+        queue.append(root) # add root node to end of queue
+        queue.append(initial_l) # add iterative depth to end of queue
+    elif len(queue) == 2 and queue[0].depth == 0 and len(node_list) == 0: # if queue has magic value and saved root only and no expanded nodes
+        return [] # no states left return empty queue
+
+    depth_limit = queue[-1]
+    root = queue[-2]
+    for node in node_list:
+        if node.depth <= depth_limit:
+            queue = [node] + queue
+
+    if len(queue) == 2 and queue[0].depth == 0: # if cannot add nodes anymore and queue has only the magic value and root
+        queue[-1] = depth_limit+1 # increase depth
+        queue = [root] + queue # add root to beginning to trigger DFS again
+
+    return queue
 
 # uniform cost search f(n) = g(n)
 def uniform_cost_search(queue, node_list):
