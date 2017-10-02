@@ -86,8 +86,14 @@ class HelpR2D2(SearchProblem):
             # if rock was movable or empty cell
             # create new state with the new positions of R2-D2 and the rocks
             new_state = StateR2D2(next_position, rocks)
+
             # create a new node in the specified direction with a new depth while keeping track of path cost and list so far
             new_node = Node(new_state, node, direction[2], node.depth + 1, node.path_cost + self.actions[direction[2]], node.path_list + [node])
+
+            # Optimization : Not repeating states
+            # if new_node in node.path_list:
+            #     continue
+
             # add the new node to the expanded list
             children.append(new_node)
         # Return the list of expanded nodes

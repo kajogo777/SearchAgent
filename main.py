@@ -47,8 +47,10 @@ def Search(grid , strategy, visualize):
     if goal_node:
         path_list = goal_node.path_list + [goal_node]
         # Visualize if required to:
-        Visualize(grid, path_list)
+        if visualize:
+            Visualize(grid, path_list)
         return (path_list, goal_node.path_cost, search_length)
+
     else:
         return (None, None, search_length)
 # Run main for testing

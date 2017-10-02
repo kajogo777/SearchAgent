@@ -17,8 +17,12 @@ class Node:
         self.path_cost = path_cost
         self.path_list = path_list
 
-    def __repr__(self): #toString
+    def __repr__(self): # toString
         return str(self.state.position)
+
+    def __eq__ (self, other): # equals
+        return self.state.position == other.state.position and self.state.rock_positions == other.state.rock_positions
+
 # general search
 def general_search(problem, q_function):
     queue = [ Node(problem.initial_state, None, None, 0, 0, []) ]
@@ -58,7 +62,7 @@ def iterative_deepening_search(queue, node_list):
         queue.append("$")
         queue.append(root) # add root node to end of queue
         queue.append(initial_l) # add iterative depth to end of queue
-    elif queue[0] == "$" and len(node_list) == 0: # if queue has magic value at the beginning and no expanded nodes
+    elif str(queue[0]) == "$" and len(node_list) == 0: # if queue has magic value at the beginning and no expanded nodes
         return [] # no states left return empty queue
 
     depth_limit = queue[-1]
@@ -67,7 +71,7 @@ def iterative_deepening_search(queue, node_list):
         if node.depth <= depth_limit:
             queue = [node] + queue
 
-    if queue[0] == "$": # if cannot add nodes anymore and queue has the magic value at the beginning
+    if str(queue[0]) == "$": # if cannot add nodes anymore and queue has the magic value at the beginning
         queue[-1] = depth_limit+1 # increase depth
         queue = [root] + queue # add root to beginning to trigger DFS again
 

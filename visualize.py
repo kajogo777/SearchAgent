@@ -66,7 +66,7 @@ def Visualize(grid, path_list):
 
 		# Generic drawing of game objects
 		def PlaceObject(x, y, type):
-			game.blit(images[type], (x * cell_size + cell_padding / 2, y * cell_size + cell_padding / 2))
+			game.blit(images[type], (x * cell_size + cell_padding / 2, (grid.n - y - 1) * cell_size + cell_padding / 2))
 
 		# Draw Objects
 		game_objects = [(grid.pressurePos,'pad-off'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (rocks,'rock'), ([grid.robotPos],'r2-d2')]
@@ -79,7 +79,7 @@ def Visualize(grid, path_list):
 					PlaceObject(x, y, obj[1])
 
 		pygame.display.update() # Display frame
-		clock.tick(FPS)
+		clock.tick(FPS) # for rendering 2 frames/second
 
 	# Close Window
 	pygame.quit()
