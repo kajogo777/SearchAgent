@@ -50,24 +50,25 @@ class HelpR2D2(SearchProblem):
         directions = [(0,1,"north"), (0,-1,"south"), (1,0,"east"), (-1,0,"west")]
         for action, cost in self.actions.items():
             for direction in directions:
-                next_position = (node.state.position[0]+direction[0], node.state.position[1]+direction[1])
+                next_position = (node.state.position[0] + direction[0], node.state.position[1] + direction[1])
                 new_rocks = [i for i in self.rock_positions]
                 rock = self.get_rock(next_position, node.state)
                 if rock > -1: # a rock exists
-                    new_rock_position = (next_position[0]+direction[0], next_position[1]+direction[1])
+                    new_rock_position = (next_position[0] + direction[0], next_position[1] + direction[1])
                     if self.is_obstacle(new_rock_position): # if exists obstacle behind rock
                         continue
                     else:
-                        new_rocks[rock] = (next_position[0]+direction[0], next_position[1]+direction[1], self.is_pressure_pad(new_rock_position))
+                        new_rocks[rock] = (next_position[0] + direction[0], next_position[1] + direction[1], self.is_pressure_pad(new_rock_position))
                 elif self.is_obstacle(next_position, node.state): # obstacle, remember rock check redundant
                     continue
                 # rock movable or empty cell create new state
                 new_state = StateR2D2(next_position, new_rocks)
-                children.append(Node(new_state, node, direction[2], node.depth+1, node.path_cost+self.actions[direction[2]]))
+                new_node = Node(new_state, node, direction[2], node.depth + 1, node.path_cost + self.actions[direction[2]])
+                children.append(new_node)
 
 
 # heuristic functions
-
+    # helper functions
     def get_d(point1, point2):
         dx = point2[i][0] - point2[0]
         dy = point2[i][1] - point2[1]
@@ -84,7 +85,7 @@ class HelpR2D2(SearchProblem):
                     index = i
         return (index, min_path)
 
-    # min path
+    # heuristic 1 : min path
     def min_direct_path(state):
         rocks_ignored = []
         rocks = []
@@ -118,7 +119,7 @@ class HelpR2D2(SearchProblem):
         while remaining > 0:
             if look_for_rock:
                 # find closest rock's index and distance away
-                index, min_path = get_min_index(curr_node, StateR2D2.m+StateR2D2.n, rocks)
+                index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, rocks)
                 # mark rock as visited
                 rocks[index][2] = True
                 # next iteration measure distance from this rock
@@ -127,7 +128,7 @@ class HelpR2D2(SearchProblem):
                 cost = cost + min_path
             else:
                 # find closest pad's index and distance away
-                index, min_path = get_min_index(curr_node, StateR2D2.m+StateR2D2.n, pads)
+                index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, pads)
                 # mark pad as visited/ctivated
                 pads[index][2] = True
                 # next iteration measure distance from this pad

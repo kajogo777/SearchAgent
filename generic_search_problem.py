@@ -15,9 +15,9 @@ class Node:
         self.operator = operator
         self.depth = depth
         self.path_cost = path_cost
-
+        
 # general search
-def general_search(problem, q_function):
+def general_search(problem, q_function, visualize):
     queue = [ Node(problem.initial_state, None, None, 0, 0) ]
 
     while True:
@@ -30,8 +30,6 @@ def general_search(problem, q_function):
         if(problem.goal_test(node.state)):
             return node
         queue = q_function(queue, problem.state_space(node, problem.actions))
-
-
 
 
 # search strategies
@@ -72,10 +70,26 @@ def uniform_cost_search(queue, node_list):
     new_queue = queue + node_list
     return sorted(new_queue, key=lambda x: x.path_cost)
 
+# Greedy search with 1st heuristic
+def greedy_h1(queue, node_list):
+    general_greedy(queue, node_list, min_direct_path)
+
+# Greedy search with 2nd heuristic
+def greedy_h2(queue, node_list):
+    general_greedy(queue, node_list, min_direct_path)
+
 # general greedy f(n) = h(n)
 def general_greedy(queue, node_list, cost_function):
     new_queue = queue + node_list
     return sorted(new_queue, key=lambda x: cost_function(x.state))
+
+# A star search with 1st heuristic
+def a_star_h1(queue, node_list):
+    general_a_star(queue, node_list, min_direct_path)
+
+# A star search with 2nd heuristic
+def a_star_h2(queue, node_list):
+    general_a_star(queue, node_list, min_direct_path)
 
 # A star f(n) = g(n)+h(n)
 def general_a_star(queue, node_list, cost_function):
