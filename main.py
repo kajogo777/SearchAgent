@@ -1,6 +1,7 @@
 from grid import *
 from generic_search_problem import *
 from r2d2_search import *
+from visualize import *
 
 def main():
     #Generate new grid
@@ -19,7 +20,7 @@ def main():
     }
 
     # Start Searching
-    bfs_test = Search(grid, strategies['BF'], True)
+    bfs_test = Search(grid, strategies['GR1'], True)
 
     print(bfs_test)
 
@@ -29,13 +30,15 @@ def Search(grid , strategy, visualize):
                     grid.rocksPos, grid.pressurePos,
                     grid.unmovables, grid.teleportalPos)
 
+    #Visualize(grid)
     # Start searching
     (goal_node, search_length) = general_search(search_problem, strategy)
 
     # Visualize if required to: TODO
+    #Visualize(grid)
 
     # Return a list of : (path to goal, total cost to goal, no. of nodes while searching)
-    return ((node.path_list + [goal_node]) if goal_node else None, goal_node.path_cost, search_length)
+    return ((goal_node.path_list + [goal_node]) if goal_node else None, goal_node.path_cost, search_length)
 
 # Run main for testing
 main()

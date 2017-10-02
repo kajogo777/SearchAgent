@@ -1,21 +1,5 @@
-# search problem ADT
-class SearchProblem:
-    def __init__(self, operators, initial_state, state_space, goal_test, path_cost):
-        self.actions = operators
-        self.initial_state = initial_state
-        self.state_space = state_space
-        self.goal_test = goal_test
-        self.path_cost = path_cost
-
-# node ADT
-class Node:
-    def __init__(self, state, parent, operator, depth, path_cost, path_list):
-        self.state = state
-        self.parent = parent
-        self.operator = operator
-        self.depth = depth
-        self.path_cost = path_cost
-        self.path_list = path_list
+from r2d2_search import *
+from search_problem import *
 
 # general search
 def general_search(problem, q_function):
@@ -75,11 +59,11 @@ def uniform_cost_search(queue, node_list):
 
 # Greedy search with 1st heuristic
 def greedy_h1(queue, node_list):
-    general_greedy(queue, node_list, min_direct_path)
+    general_greedy(queue, node_list, HelpR2D2.min_direct_path)
 
 # Greedy search with 2nd heuristic
 def greedy_h2(queue, node_list):
-    general_greedy(queue, node_list, min_direct_path)
+    general_greedy(queue, node_list, HelpR2D2.min_direct_path)
 
 # general greedy f(n) = h(n)
 def general_greedy(queue, node_list, cost_function):
@@ -88,11 +72,11 @@ def general_greedy(queue, node_list, cost_function):
 
 # A star search with 1st heuristic
 def a_star_h1(queue, node_list):
-    general_a_star(queue, node_list, min_direct_path)
+    general_a_star(queue, node_list, HelpR2D2.min_direct_path)
 
 # A star search with 2nd heuristic
 def a_star_h2(queue, node_list):
-    general_a_star(queue, node_list, min_direct_path)
+    general_a_star(queue, node_list, HelpR2D2.min_direct_path)
 
 # A star f(n) = g(n)+h(n)
 def general_a_star(queue, node_list, cost_function):

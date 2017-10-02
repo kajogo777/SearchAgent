@@ -1,4 +1,4 @@
-from generic_search_problem import *
+from search_problem import *
 
 class StateR2D2():
     def __init__(self, position, rock_positions):
@@ -71,7 +71,7 @@ class HelpR2D2(SearchProblem):
             if rock_index != -1: # a rock exists
                 new_rock_position = (next_position[0] + direction[0], next_position[1] + direction[1])
                 # if exists an obstacle or a rock behind the rock -> don't move
-                if self.is_obstacle(new_rock_position) or self.get_rock_index(new_rock_position, node.state):
+                if self.is_obstacle(new_rock_position) or self.get_rock_index(new_rock_position, node.state) != -1:
                     continue
                 # else move rock
                 else:
@@ -103,7 +103,7 @@ class HelpR2D2(SearchProblem):
         min_path = maxd
         for i in range(len(arr)):
             if(not arr[i][2]):
-                d = get_d(point1, arr[i])
+                d = HelpR2D2.get_d(point1, arr[i])
                 if d < min_path:
                     min_path = d
                     index = i
@@ -123,7 +123,7 @@ class HelpR2D2(SearchProblem):
 
         # if no rocks remained return distance to portal
         if len(rocks) == 0:
-            return get_d(state.position, StateR2D2.portal)
+            return HelpR2D2.get_d(state.position, StateR2D2.portal)
 
         pads = []
         # ignore all activated pressure pads
@@ -143,7 +143,7 @@ class HelpR2D2(SearchProblem):
         while remaining > 0:
             if look_for_rock:
                 # find closest rock's index and distance away
-                index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, rocks)
+                index, min_path = HelpR2D2.get_min_index(curr_node, StateR2D2.m + StateR2D2.n, rocks)
                 # mark rock as visited
                 rocks[index][2] = True
                 # next iteration measure distance from this rock
@@ -152,7 +152,7 @@ class HelpR2D2(SearchProblem):
                 cost = cost + min_path
             else:
                 # find closest pad's index and distance away
-                index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, pads)
+                index, min_path = HelpR2D2.get_min_index(curr_node, StateR2D2.m + StateR2D2.n, pads)
                 # mark pad as visited/ctivated
                 pads[index][2] = True
                 # next iteration measure distance from this pad
@@ -165,6 +165,6 @@ class HelpR2D2(SearchProblem):
             look_for_rock = not look_for_rock
 
         # when done with planning routes, add the distance to the portal from the last object visited
-        cost = cost + get_d(curr_node, StateR2D2.portal)
+        cost = cost + HelpR2D2.get_d(curr_node, StateR2D2.portal)
 
         return cost
