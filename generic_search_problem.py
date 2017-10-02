@@ -1,5 +1,21 @@
-from r2d2_search import *
-from search_problem import *
+# search problem ADT
+class SearchProblem:
+    def __init__(self, operators, initial_state, state_space, goal_test, path_cost):
+        self.actions = operators
+        self.initial_state = initial_state
+        self.state_space = state_space
+        self.goal_test = goal_test
+        self.path_cost = path_cost
+
+# node ADT
+class Node:
+    def __init__(self, state, parent, operator, depth, path_cost, path_list):
+        self.state = state
+        self.parent = parent
+        self.operator = operator
+        self.depth = depth
+        self.path_cost = path_cost
+        self.path_list = path_list
 
 # general search
 def general_search(problem, q_function):
@@ -13,6 +29,8 @@ def general_search(problem, q_function):
         node = queue[0]
         del queue[0]
         search_length += 1
+
+        #print("%s  %s" % (node.state.position, list(map(lambda x: x[2], node.state.rock_positions))))
 
         if(problem.goal_test(node.state)):
             return (node, search_length)
@@ -57,26 +75,10 @@ def uniform_cost_search(queue, node_list):
     new_queue = queue + node_list
     return sorted(new_queue, key=lambda x: x.path_cost)
 
-# Greedy search with 1st heuristic
-def greedy_h1(queue, node_list):
-    general_greedy(queue, node_list, HelpR2D2.min_direct_path)
-
-# Greedy search with 2nd heuristic
-def greedy_h2(queue, node_list):
-    general_greedy(queue, node_list, HelpR2D2.min_direct_path)
-
 # general greedy f(n) = h(n)
 def general_greedy(queue, node_list, cost_function):
     new_queue = queue + node_list
     return sorted(new_queue, key=lambda x: cost_function(x.state))
-
-# A star search with 1st heuristic
-def a_star_h1(queue, node_list):
-    general_a_star(queue, node_list, HelpR2D2.min_direct_path)
-
-# A star search with 2nd heuristic
-def a_star_h2(queue, node_list):
-    general_a_star(queue, node_list, HelpR2D2.min_direct_path)
 
 # A star f(n) = g(n)+h(n)
 def general_a_star(queue, node_list, cost_function):
