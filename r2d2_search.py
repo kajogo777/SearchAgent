@@ -51,9 +51,9 @@ class HelpR2D2(SearchProblem):
                         continue;
                     else:
                         new_rocks = [i for i in self.rock_positions]
-                        new_rocks[rock] = (next_position[0]+direction[0], next_position[1]+direction[1], self.is_pressure_pad(new_rock_position))
+                        new_rocks[rock] = (next_position[0] + direction[0], next_position[1] + direction[1], self.is_pressure_pad(new_rock_position))
                         new_state = StateR2D2(next_position, new_rocks)
-                        children.append(Node(new_state, node, direction[2], node.depth+1, node.path_cost+self.actions[direction[2]]))
+                        children.append(Node(new_state, node, direction[2], node.depth + 1, node.path_cost + self.actions[direction[2]]))
                 elif self.is_obstacle(next_position, node.state): # obstacle, remember rock check redundant
                     continue;
 

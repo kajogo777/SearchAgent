@@ -70,10 +70,15 @@ def VisualizeGrid():
 	#Generate new grid
 	grid = GenGrid()
 
+	# Cell coordinates
+	cell_size = 100;
+	cells_spacing = 1 # 1px spacing bet. cells
+	cell_padding = 20 # 20px padding inside cell
+
 	# Init Game
 	pygame.init()
-	screen_width = 1000;
-	screen_height = 1000;
+	screen_width = grid.m * cell_size;
+	screen_height = grid.n * cell_size;
 	game = pygame.display.set_mode((screen_width ,screen_height)) #Init window
 	pygame.display.set_caption('Search Agent') # Title
 	clock = pygame.time.Clock() # Handling FPS
@@ -81,21 +86,16 @@ def VisualizeGrid():
 	game_ended = False # For exiting game
 
 	# Colors
-	WHITE = (255, 255 , 255)
+	WHITE = (253, 253 , 253)
 	BLACK = (0, 0 ,0)
-
-	# Cell coordinates
-	cell_width = int(screen_width / grid.m)
-	cell_height = int(screen_height / grid.n)
-	cells_spacing = 1 # 1px spacing bet. cells
-	cell_padding = 20 # 20px padding inside cell
+	YELLOW = (240,230,140)
 
 	# Load Images
 	images_paths = ['rock', 'pad-off', 'pad-on', 'portal', 'r2-d2', 'unmovable']
 	images = {} # List of imported images
 	for image_name in images_paths:
 		img = pygame.image.load('assets/'+ image_name + '.png') # Import image
-		img = pygame.transform.scale(img, (cell_width - cell_padding, cell_height - cell_padding))  # Rescale to fit cell
+		img = pygame.transform.smoothscale(img, (cell_size - cell_padding, cell_size - cell_padding))  # Rescale to fit cell
 		images[image_name] = img # Add to dictionary
 
 	# Game Loop
@@ -108,20 +108,20 @@ def VisualizeGrid():
 					print('pressed')
 
 		# Draw Frame
-		game.fill(BLACK) # Background
+		game.fill(YELLOW) # Background
 
-		#Draw Grid
-		for x in np.arange(0, screen_width, cell_width, dtype = int):
-			for y in np.arange(0, screen_height, cell_height, dtype = int):
-				new_rectangle = pygame.Rect(x + cells_spacing, y + cells_spacing, cell_width - cells_spacing, cell_height - cells_spacing)
-				pygame.draw.rect(game, WHITE, new_rectangle)
+		# Draw Grid
+		for x in np.arange(0, screen_width, cell_size, dtype = int):
+			for y in np.arange(0, screen_height, cell_size, dtype = int):
+				new_rectangle = pygame.Rect(x + cells_spacing, y + cells_spacing, cell_size - cells_spacing, cell_size - cells_spacing)
+				pygame.draw.rect(game, WHITE, new_rectangle) # Draw Cell
 
 		# Generic drawing of game objects
 		def PlaceObject(x, y, type):
-			game.blit(images[type], (x * cell_width + cell_padding / 2, y * cell_height + cell_padding / 2))
+			game.blit(images[type], (x * cell_size + cell_padding / 2, y * cell_size + cell_padding / 2))
 
-		game_objects = [([grid.robotPos],'r2-d2'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (grid.pressurePos,'pad-off'), (grid.rocksPos,'rock')]
-		#Draw Objects
+		# Draw Objects
+		game_objects = [(grid.pressurePos,'pad-off'), ([grid.robotPos],'r2-d2'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (grid.rocksPos,'rock')]
 		for obj in game_objects:
 			for (x, y) in obj[0]:
 				PlaceObject(x, y, obj[1])
