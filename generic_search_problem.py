@@ -9,28 +9,31 @@ class SearchProblem:
 
 # node ADT
 class Node:
-    def __init__(self, state, parent, operator, depth, path_cost):
+    def __init__(self, state, parent, operator, depth, path_cost, path_list):
         self.state = state
         self.parent = parent
         self.operator = operator
         self.depth = depth
         self.path_cost = path_cost
-        
+        self.path_list = path_list
+
 # general search
-def general_search(problem, q_function, visualize):
-    queue = [ Node(problem.initial_state, None, None, 0, 0) ]
+def general_search(problem, q_function):
+    queue = [ Node(problem.initial_state, None, None, 0, 0, []) ]
+    search_length = 0  # keeps track of no. of visited nodes
 
     while True:
         if(len(queue) == 0):
-            return None
+            return (None, search_length)
 
         node = queue[0]
         del queue[0]
+        search_length += 1
 
         if(problem.goal_test(node.state)):
-            return node
-        queue = q_function(queue, problem.state_space(node, problem.actions))
-
+            return (node, search_length)
+        node_list = problem.state_space(node) # Expansion
+        queue = q_function(queue, node_list) # Queuing
 
 # search strategies
 
