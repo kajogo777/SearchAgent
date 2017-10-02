@@ -26,20 +26,19 @@ def main():
 
 def Search(grid , strategy, visualize):
     # Instantiate the search problem
-    # search_problem = HelpR2D2(grid.m, grid.n, grid.robotPos,
-    #                 grid.rocksPos, grid.pressurePos,
-    #                 grid.unmovables, grid.teleportalPos)
+    search_problem = HelpR2D2(grid.m, grid.n, grid.robotPos,
+                    grid.rocksPos, grid.pressurePos,
+                    grid.unmovables, grid.teleportalPos)
 
-    search_problem = HelpR2D2(
-                    4,
-                    4,
-                    (0,0),
-                    [(1,2), (2,0)],
-                    [(2,2), (3,0)],
-                    [],
-                    (3,3))
+    # search_problem = HelpR2D2(
+    #                 4,
+    #                 4,
+    #                 (0,0),
+    #                 [(1,2), (2,0)],
+    #                 [(2,2), (3,0)],
+    #                 [],
+    #                 (3,3))
 
-    #Visualize(grid)
     # Start searching
     (goal_node, search_length) = general_search(search_problem, strategy)
 

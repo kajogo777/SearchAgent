@@ -17,15 +17,19 @@ class Node:
         self.path_cost = path_cost
         self.path_list = path_list
 
+    def __repr__(self): #toString
+        return str(self.state.position)
 # general search
 def general_search(problem, q_function):
     queue = [ Node(problem.initial_state, None, None, 0, 0, []) ]
     search_length = 0  # keeps track of no. of visited nodes
+    max_int = 2147483647; #time_out
 
     while True:
-        if(len(queue) == 0):
+        if(len(queue) == 0 or search_length > max_int):
             return (None, search_length)
 
+        print(search_length)
         node = queue[0]
         del queue[0]
         search_length += 1

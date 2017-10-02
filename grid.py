@@ -13,8 +13,8 @@ class Grid:
 def GenGrid():
 
 	#Base
-	m = randint(5,10)
-	n = randint(5,10)
+	m = randint(3,6)
+	n = randint(3,6)
 
 	#R2D2
 	robotPos = (randint(0, m-1), randint(0, n-1))
@@ -26,7 +26,7 @@ def GenGrid():
 	unmovableNum = randint(1, max(m,n))
 	unmovablesPos = []
 
-	for i in range(1, unmovableNum):
+	for i in range(0, unmovableNum):
 		currUnmovable = (randint(0, m-1), randint(0, n-1))
 		#if occupied pick another one
 		while ((currUnmovable in unmovablesPos) or (currUnmovable == teleportalPos) or (currUnmovable == robotPos)):
@@ -38,16 +38,16 @@ def GenGrid():
 	rocksPos = []
 	pressurePos = []
 
-	for j in range(1, rocksNum):
+	for j in range(0, rocksNum):
 		currRock = (randint(0,m-1), randint(0,n-1))
 		currPressure = (randint(0,m-1), randint(0,n-1))
 
-		while ((currPressure in unmovablesPos) or (currPressure == teleportalPos)):
+		while ((currPressure in pressurePos) or (currPressure in unmovablesPos) or (currPressure == teleportalPos)):
 			currPressure = (randint(0,m-1), randint(0,n-1))
 
 		pressurePos.append(currPressure)
 
-		while ((currRock in unmovablesPos) or (currRock in pressurePos) or (currRock == teleportalPos) or (currRock == robotPos)):
+		while ((currRock in rocksPos) or (currRock in unmovablesPos) or (currRock in pressurePos) or (currRock == teleportalPos) or (currRock == robotPos)):
 			currRock = (randint(0,m-1), randint(0,n-1))
 
 		rocksPos.append(currRock)
