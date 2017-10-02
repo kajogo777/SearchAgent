@@ -29,7 +29,6 @@ def general_search(problem, q_function):
         if(len(queue) == 0 or search_length > max_int):
             return (None, search_length)
 
-        print(search_length)
         node = queue[0]
         del queue[0]
         search_length += 1

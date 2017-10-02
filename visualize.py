@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 
-def Visualize(grid):
+def Visualize(grid, path_list):
 
 	# Cell coordinates
 	cell_size = 100;
@@ -15,7 +15,7 @@ def Visualize(grid):
 	game = pygame.display.set_mode((screen_width ,screen_height)) #Init window
 	pygame.display.set_caption('Search Agent') # Title
 	clock = pygame.time.Clock() # Handling FPS
-	FPS = 60
+	FPS = 2 # 2 Frames/ Second
 	game_ended = False # For exiting game
 
 	# Colors
@@ -31,15 +31,30 @@ def Visualize(grid):
 		img = pygame.transform.smoothscale(img, (cell_size - cell_padding, cell_size - cell_padding))  # Rescale to fit cell
 		images[image_name] = img # Add to dictionary
 
+	i = 0
 	# Game Loop
 	while not game_ended:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT: # End Game
 				game_ended = True
 			if event.type == pygame.KEYDOWN: # Keyboard Input
-				if event.key == pygame.K_s:
-					print('pressed')
+				if event.key == pygame.K_r: # Restart Display if pressed r
+					i = 0
 
+		# Get current node
+		node = path_list[i]
+		if i < (len(path_list) - 1):
+			i += 1
+
+		#Change grid
+		grid.robotPos = node.state.position
+		active_pads = []
+		rocks = []
+		for rock in node.state.rock_positions:
+			if rock[2]: # if rock was on pad
+				active_pads.append((rock[0], rock[1]))
+			else:
+				rocks.append((rock[0], rock[1]))
 		# Draw Frame
 		game.fill(YELLOW) # Lines color
 
@@ -54,13 +69,17 @@ def Visualize(grid):
 			game.blit(images[type], (x * cell_size + cell_padding / 2, y * cell_size + cell_padding / 2))
 
 		# Draw Objects
-		game_objects = [(grid.pressurePos,'pad-off'), ([grid.robotPos],'r2-d2'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (grid.rocksPos,'rock')]
-		for obj in game_objects:
+		game_objects = [(grid.pressurePos,'pad-off'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (rocks,'rock'), ([grid.robotPos],'r2-d2')]
+		for idx,obj in enumerate(game_objects):
 			for (x, y) in obj[0]:
-				PlaceObject(x, y, obj[1])
+				#Draw activate pads
+				if idx == 0 and (x, y) in active_pads:
+					PlaceObject(x, y, 'pad-on')
+				else:
+					PlaceObject(x, y, obj[1])
 
 		pygame.display.update() # Display frame
-		clock.tick(FPS) # Updating by 60 FPS
+		clock.tick(FPS)
 
 	# Close Window
 	pygame.quit()
