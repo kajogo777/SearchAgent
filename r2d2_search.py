@@ -1,5 +1,4 @@
 from generic_search_problem import *
-import math
 
 class StateR2D2():
     def __init__(self, position, rock_positions):
@@ -26,6 +25,7 @@ class HelpR2D2(SearchProblem):
         # Defining the initial state
         self.initial_state = StateR2D2(position, list(mapped))
         self.path_cost = 0
+        self.memoization = []
 
 # goal test function
     def goal_test(self, state):
@@ -58,6 +58,14 @@ class HelpR2D2(SearchProblem):
 
 # state space transition/expanding function
     def state_space(self, node):
+        if node.depth == 0:
+            self.memoization = []
+        else:
+            for state in self.memoization:
+                if node.state.position == state.position and node.state.rock_positions == state.rock_positions:
+                    return []
+        self.memoization.append(node.state)
+
         children = [] # list of expanded nodes
         directions = [(0,1,"north"), (0,-1,"south"), (1,0,"east"), (-1,0,"west")] # possible movements
         for direction in directions:
@@ -104,7 +112,7 @@ class HelpR2D2(SearchProblem):
 def get_d(point1, point2):
     dx = point1[0] - point2[0]
     dy = point1[1] - point2[1]
-    return math.sqrt(dx**2 + dy**2)
+    return abs(dx) + abs(dy)
 
 def get_min_index(point1, maxd, arr):
     index = -1

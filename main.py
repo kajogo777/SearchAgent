@@ -23,15 +23,14 @@ def main():
         'ID': iterative_deepening_search,
         'UC': uniform_cost_search,
         'GR1': greedy_h1,
-        'GR2': greedy_h2,
+        # 'GR2': greedy_h2,
         'AS1': a_star_h1,
-        'AS2': a_star_h2
+        # 'AS2': a_star_h2
     }
-
-    # Start Searching
-    bfs_test = Search(grid, strategies['GR1'], True)
-
-    print(bfs_test)
+    names = sorted(strategies.items(), key=lambda x: x[0])
+    for name, strategy in names:
+        test = Search(grid, strategy, False)
+        print("%s %s steps, %s cost, %s nodes" % (name, len(test[0])-1, test[1], test[2]))
 
 def Search(grid , strategy, visualize):
 
@@ -52,6 +51,6 @@ def Search(grid , strategy, visualize):
         return (path_list, goal_node.path_cost, search_length)
 
     else:
-        return (None, None, search_length)
+        return ([], None, search_length)
 # Run main for testing
 main()

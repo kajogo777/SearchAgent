@@ -17,20 +17,19 @@ class Node:
         self.path_cost = path_cost
         self.path_list = path_list
 
-    def __repr__(self): # toString
-        return str(self.state.position)
+    # def __repr__(self): # toString
+    #     return "lvl(%d) p%s" % (self.depth, self.state.position)
 
-    def __eq__ (self, other): # equals
-        return self.state.position == other.state.position and self.state.rock_positions == other.state.rock_positions
+    # def __eq__ (self, other): # equals
+    #     return self.state.position == other.state.position and self.state.rock_positions == other.state.rock_positions
 
 # general search
 def general_search(problem, q_function):
     queue = [ Node(problem.initial_state, None, None, 0, 0, []) ]
     search_length = 0  # keeps track of no. of visited nodes
-    max_int = 2147483647; #time_out
 
     while True:
-        if(len(queue) == 0 or search_length > max_int):
+        if(len(queue) == 0):
             return (None, search_length)
 
         node = queue[0]
@@ -60,21 +59,28 @@ def iterative_deepening_search(queue, node_list):
         root = node_list[0].parent # get root
         initial_l = 1 # set first iterative depth to 1
         queue.append("$")
+        queue.append(1)
         queue.append(root) # add root node to end of queue
         queue.append(initial_l) # add iterative depth to end of queue
-    elif str(queue[0]) == "$" and len(node_list) == 0: # if queue has magic value at the beginning and no expanded nodes
-        return [] # no states left return empty queue
+    # elif str(queue[0]) == "$" and len(node_list) == 0: # if queue has magic value at the beginning and no expanded nodes
+    #     return [] # no states left return empty queue
 
     depth_limit = queue[-1]
     root = queue[-2]
+    max_depth_encountered = queue[-3]
+
     for node in node_list:
         if node.depth <= depth_limit:
             queue = [node] + queue
+        elif max_depth_encountered < node.depth:
+            queue[-3] = node.depth
 
     if str(queue[0]) == "$": # if cannot add nodes anymore and queue has the magic value at the beginning
-        queue[-1] = depth_limit+1 # increase depth
-        queue = [root] + queue # add root to beginning to trigger DFS again
-
+        if queue[-3] > depth_limit:
+            queue[-1] = depth_limit+1 # increase depth
+            queue = [root] + queue # add root to beginning to trigger DFS again
+        else:
+            queue = []
     return queue
 
 # uniform cost search f(n) = g(n)
