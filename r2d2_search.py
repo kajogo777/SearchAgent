@@ -114,9 +114,9 @@ def get_d(point1, point2):
     dy = point1[1] - point2[1]
     return abs(dx) + abs(dy)
 
-def get_min_index(point1, maxd, arr):
+def get_min_index(point1, arr):
     index = -1
-    min_path = maxd
+    min_path = StateR2D2.m + StateR2D2.n
     for i in range(len(arr)):
         if(not arr[i][2]):
             d = get_d(point1, arr[i])
@@ -126,7 +126,7 @@ def get_min_index(point1, maxd, arr):
     return (index, min_path)
 
 # heuristic 1 : min path
-def min_direct_path(state):
+def first_heuristic(state):
     rocks_ignored = []
     rocks = []
 
@@ -159,7 +159,7 @@ def min_direct_path(state):
     while remaining > 0:
         if look_for_rock:
             # find closest rock's index and distance away
-            index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, rocks)
+            index, min_path = get_min_index(curr_node, rocks)
             # mark rock as visited
             rocks[index] = (rocks[index][0], rocks[index][1], True)
             # next iteration measure distance from this rock
@@ -168,7 +168,7 @@ def min_direct_path(state):
             cost = cost + min_path
         else:
             # find closest pad's index and distance away
-            index, min_path = get_min_index(curr_node, StateR2D2.m + StateR2D2.n, pads)
+            index, min_path = get_min_index(curr_node, pads)
             # mark pad as visited/ctivated
             pads[index] = (pads[index][0], pads[index][1], True)
             # next iteration measure distance from this pad
@@ -182,21 +182,34 @@ def min_direct_path(state):
 
     # when done with planning routes, add the distance to the portal from the last object visited
     cost = cost + get_d(curr_node, StateR2D2.portal)
+    return cost
 
+#Heuristic 2
+def second_heuristic(state):
+    # Generate a list of unactivated pads
+    pressure_pads = list(map(lambda pad : (pad[0], pad[1], False), state.pressure_points))
+
+    #looping on the rocks
+    sum_distances = 0
+    for rock in state.rock_positions:
+        index, path = get_min_index(rock, pressure_pads)
+        pressure_pads[index] = (pressure_pads[index][0], pressure_pads[index][1], True)
+        sum_distances += path
+    cost = sum_distances + get_d(state.position, StateR2D2.portal)
     return cost
 
 # A star search with 1st heuristic
 def a_star_h1(queue, node_list):
-    return general_a_star(queue, node_list, min_direct_path)
+    return general_a_star(queue, node_list, first_heuristic)
 
 # A star search with 2nd heuristic
 def a_star_h2(queue, node_list):
-    return general_a_star(queue, node_list, min_direct_path)
+    return general_a_star(queue, node_list, second_heuristic)
 
 # Greedy search with 1st heuristic
 def greedy_h1(queue, node_list):
-    return general_greedy(queue, node_list, min_direct_path)
+    return general_greedy(queue, node_list, first_heuristic)
 
 # Greedy search with 2nd heuristic
 def greedy_h2(queue, node_list):
-    return general_greedy(queue, node_list, min_direct_path)
+    return general_greedy(queue, node_list, second_heuristic)

@@ -20,12 +20,12 @@ def main():
     strategies = {
         'BF': breadth_first_search,
         'DF': depth_first_search,
-        'ID': iterative_deepening_search,
+        #'ID': iterative_deepening_search,
         'UC': uniform_cost_search,
         'GR1': greedy_h1,
-        # 'GR2': greedy_h2,
+        'GR2': greedy_h2,
         'AS1': a_star_h1,
-        # 'AS2': a_star_h2
+        'AS2': a_star_h2
     }
     names = sorted(strategies.items(), key=lambda x: x[0])
     for name, strategy in names:
