@@ -17,8 +17,8 @@ class Node:
         self.path_cost = path_cost
         self.path_list = path_list
 
-    # def __repr__(self): # toString
-    #     return "lvl(%d) p%s" % (self.depth, self.state.position)
+    def __repr__(self): # toString
+        return "p%s" % (self.state.position,)
 
     # def __eq__ (self, other): # equals
     #     return self.state.position == other.state.position and self.state.rock_positions == other.state.rock_positions

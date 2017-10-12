@@ -47,7 +47,7 @@ def Visualize(grid, path_list):
 			i += 1
 
 		#Change grid
-		grid.robotPos = node.state.position
+		robotPos = node.state.position
 		active_pads = []
 		rocks = []
 		for rock in node.state.rock_positions:
@@ -69,7 +69,7 @@ def Visualize(grid, path_list):
 			game.blit(images[type], (x * cell_size + cell_padding / 2, (grid.n - y - 1) * cell_size + cell_padding / 2))
 
 		# Draw Objects
-		game_objects = [(grid.pressurePos,'pad-off'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (rocks,'rock'), ([grid.robotPos],'r2-d2')]
+		game_objects = [(grid.pressurePos,'pad-off'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (rocks,'rock'), ([robotPos],'r2-d2')]
 		for idx,obj in enumerate(game_objects):
 			for (x, y) in obj[0]:
 				#Draw activate pads
@@ -83,4 +83,4 @@ def Visualize(grid, path_list):
 
 	# Close Window
 	pygame.quit()
-	quit()
+	#quit()

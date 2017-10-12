@@ -8,19 +8,19 @@ def main():
     grid = GenGrid()
 
     #Sample grid
-    # grid.m = 4
+    # grid.m = 5
     # grid.n = 4
-    # grid.robotPos = (0,0)
-    # grid.rocksPos = [(1,2), (2,0)]
-    # grid.pressurePos = [(2,2), (3,0)]
-    # grid.unmovables = []
-    # grid.teleportalPos = (3,3)
+    # grid.robotPos = (3,1)
+    # grid.teleportalPos = (3,1)
+    # grid.unmovables = [(1,2), (4,2), (3,3), (3,0), (4,1)]
+    # grid.rocksPos = [(0,2)]
+    # grid.pressurePos = [(0,3)]
 
     # Types of search
     strategies = {
         'BF': breadth_first_search,
         'DF': depth_first_search,
-        #'ID': iterative_deepening_search,
+        'ID': iterative_deepening_search,
         'UC': uniform_cost_search,
         'GR1': greedy_h1,
         'GR2': greedy_h2,
@@ -29,8 +29,8 @@ def main():
     }
     names = sorted(strategies.items(), key=lambda x: x[0])
     for name, strategy in names:
-        test = Search(grid, strategy, False)
-        print("%s %s steps, %s cost, %s nodes" % (name, len(test[0])-1, test[1], test[2]))
+        test = Search(grid, strategy, True)
+        print("path = %s %s, cost = %s, %s nodes" % (name, test[0], test[1], test[2]))
 
 def Search(grid , strategy, visualize):
 
