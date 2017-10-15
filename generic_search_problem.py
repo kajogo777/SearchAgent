@@ -55,7 +55,10 @@ def depth_first_search(queue, node_list):
 
 # iterative deepening search
 def iterative_deepening_search(queue, node_list):
+
     if len(queue) == 0: # initialize queue magic value and initial state
+        if len(node_list) == 0:
+            return []
         root = node_list[0].parent # get root
         initial_l = 1 # set first iterative depth to 1
         queue.append("$")

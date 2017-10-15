@@ -195,7 +195,8 @@ def second_heuristic(state):
         index, path = get_min_index(rock, pressure_pads)
         pressure_pads[index] = (pressure_pads[index][0], pressure_pads[index][1], True)
         sum_distances += path
-    cost = sum_distances + get_d(state.position, StateR2D2.portal)
+
+    cost = sum_distances
     return cost
 
 # A star search with 1st heuristic

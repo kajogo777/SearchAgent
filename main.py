@@ -16,6 +16,16 @@ def main():
     # grid.rocksPos = [(0,2)]
     # grid.pressurePos = [(0,3)]
 
+    # Stuck scenario
+    # grid.m = 4
+    # grid.n = 3
+    # grid.robotPos = (2,0)
+    # grid.teleportalPos = (0,1)
+    # grid.unmovables = [(3,0), (0,0), (2,1)]
+    # grid.rocksPos = [(2,2), (1,0), (3,1), (1,1)]
+    # grid.pressurePos = [(0,2), (3,2), (1,2), (2,2)]
+
+
     # Types of search
     strategies = {
         'BF': breadth_first_search,
@@ -29,8 +39,8 @@ def main():
     }
     names = sorted(strategies.items(), key=lambda x: x[0])
     for name, strategy in names:
-        test = Search(grid, strategy, True)
-        print("path = %s %s, cost = %s, %s nodes" % (name, test[0], test[1], test[2]))
+        test = Search(grid, strategy, False)
+        print("path = %s %s,\n cost = %s,\n %s nodes\n" % (name, test[0] if len(test[0]) > 0 else 'No Solution', test[1], test[2]))
 
 def Search(grid , strategy, visualize):
 
