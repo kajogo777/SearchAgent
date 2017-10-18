@@ -31,7 +31,6 @@ def general_search(problem, q_function):
     while True:
         if(len(queue) == 0):
             return (None, search_length)
-
         node = queue[0]
         del queue[0]
         search_length += 1

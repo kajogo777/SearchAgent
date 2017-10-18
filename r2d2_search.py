@@ -27,22 +27,24 @@ class HelpR2D2(SearchProblem):
         self.path_cost = 0
         self.memoization = []
 
-# goal test function
+    # goal test function
     def goal_test(self, state):
         test = True
         for rock in state.rock_positions:
-            test = test and rock[2]
-        test = test and (state.position == StateR2D2.portal)
+            test = test and rock[2] # If all rocks are on pads
+        test = test and (state.position == StateR2D2.portal) # If R2D2 is on the portal
         return test
 
-# helper methods
+    # helper methods
+    # Returns the index of a rock if exists in this cell, otherwise -1
     def get_rock_index(self, position, state):
         index = -1
         for i in range(len(state.rock_positions)):
             if state.rock_positions[i][0] == position[0] and state.rock_positions[i][1] == position[1]:
                 index = i
-        return index # returns -1 if not found else index of current rock in the list
+        return index
 
+    # Returns true if there's an obstacle in this cell
     def is_obstacle(self, position):
         # Check if out of bounds
         if position[0] >= StateR2D2.m or position[0] < 0 or position[1] >= StateR2D2.n or position[1] < 0:
@@ -53,19 +55,21 @@ class HelpR2D2(SearchProblem):
         # Empty Cell
         return False
 
+    # Check if the cell contains a pressure pad
     def is_pressure_pad(self, position):
         return position in StateR2D2.pressure_points
 
-# state space transition/expanding function
+    # State space transition/expanding function
     def state_space(self, node):
-        if node.depth == 0:
+        if node.depth == 0: # Start Memoization
             self.memoization = []
         else:
-            for state in self.memoization:
+            for state in self.memoization: # Don't expand if it's a repeated state
                 if node.state.position == state.position and node.state.rock_positions == state.rock_positions:
                     return []
         self.memoization.append(node.state)
 
+        # Else if it's a new unique state
         children = [] # list of expanded nodes
         directions = [(0,1,"north"), (0,-1,"south"), (1,0,"east"), (-1,0,"west")] # possible movements
         for direction in directions:
@@ -98,22 +102,19 @@ class HelpR2D2(SearchProblem):
             # create a new node in the specified direction with a new depth while keeping track of path cost and list so far
             new_node = Node(new_state, node, direction[2], node.depth + 1, node.path_cost + self.actions[direction[2]], node.path_list + [node])
 
-            # Optimization : Not repeating states
-            # if new_node in node.path_list:
-            #     continue
-
             # add the new node to the expanded list
             children.append(new_node)
         # Return the list of expanded nodes
         return children
 
-# heuristic functions
-# helper functions
+# Heuristic functions
+# City Block distance between 2 points
 def get_d(point1, point2):
     dx = point1[0] - point2[0]
     dy = point1[1] - point2[1]
     return abs(dx) + abs(dy)
 
+# Get the closest required object index and path from a point in a given list
 def get_min_index(point1, arr):
     index = -1
     min_path = StateR2D2.m + StateR2D2.n
@@ -125,8 +126,8 @@ def get_min_index(point1, arr):
                 index = i
     return (index, min_path)
 
-# heuristic 1 : min path
-def first_heuristic(state):
+# Heuristic 1 : Direct Path
+def direct_path(state):
     rocks_ignored = []
     rocks = []
 
@@ -184,8 +185,8 @@ def first_heuristic(state):
     cost = cost + get_d(curr_node, StateR2D2.portal)
     return cost
 
-#Heuristic 2
-def second_heuristic(state):
+# Heuristic 2 : Sum Rock-Pad Distances
+def sum_distances(state):
     # Generate a list of unactivated pads
     pressure_pads = list(map(lambda pad : (pad[0], pad[1], False), state.pressure_points))
 
@@ -201,16 +202,16 @@ def second_heuristic(state):
 
 # A star search with 1st heuristic
 def a_star_h1(queue, node_list):
-    return general_a_star(queue, node_list, first_heuristic)
+    return general_a_star(queue, node_list, direct_path)
 
 # A star search with 2nd heuristic
 def a_star_h2(queue, node_list):
-    return general_a_star(queue, node_list, second_heuristic)
+    return general_a_star(queue, node_list, sum_distances)
 
 # Greedy search with 1st heuristic
 def greedy_h1(queue, node_list):
-    return general_greedy(queue, node_list, first_heuristic)
+    return general_greedy(queue, node_list, direct_path)
 
 # Greedy search with 2nd heuristic
 def greedy_h2(queue, node_list):
-    return general_greedy(queue, node_list, second_heuristic)
+    return general_greedy(queue, node_list, sum_distances)
