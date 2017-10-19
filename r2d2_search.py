@@ -108,6 +108,7 @@ class HelpR2D2(SearchProblem):
         return children
 
 # Heuristic functions
+# Helper functions
 # City Block distance between 2 points
 def get_d(point1, point2):
     dx = point1[0] - point2[0]

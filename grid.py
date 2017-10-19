@@ -12,29 +12,29 @@ class Grid:
 
 def GenGrid():
 
-	#Base
+	# Base
 	m = randint(3,5)
 	n = randint(3,5)
 
-	#R2D2
+	# R2D2
 	robotPos = (randint(0, m-1), randint(0, n-1))
 
-	#Teleportal
+	# Teleportal
 	teleportalPos = (randint(0, m-1), randint(0, n-1))
 
-	#Unmovable Objects
+	# Unmovable Objects
 	unmovableNum = randint(1, max(m,n))
 	unmovablesPos = []
 
 	for i in range(0, unmovableNum):
 		currUnmovable = (randint(0, m-1), randint(0, n-1))
-		#if occupied pick another one
+		# if occupied pick another one
 		while ((currUnmovable in unmovablesPos) or (currUnmovable == teleportalPos) or (currUnmovable == robotPos)):
 			currUnmovable = (randint(0, m-1), randint(0, n-1))
 		unmovablesPos.append(currUnmovable)
 
-	#Rocks & Pressure Pads
-	rocksNum = randint(1, max(m,n)) #Same no. of pressure pads
+	# Rocks & Pressure Pads
+	rocksNum = randint(1, max(m,n)) # Same no. of pressure pads
 	rocksPos = []
 	pressurePos = []
 
@@ -52,7 +52,7 @@ def GenGrid():
 
 		rocksPos.append(currRock)
 
-	#Testing
+	# Testing
 	print("m = ",m)
 	print("n = ", n)
 	print("The robot is at ", robotPos)
@@ -61,5 +61,5 @@ def GenGrid():
 	print("The rocks' positions are ", rocksPos)
 	print("And the pressure pads' positions are ", pressurePos)
 
-	#Generate a grid object
+	# Generate a grid object
 	return Grid(m, n, robotPos, teleportalPos, unmovablesPos, rocksPos, pressurePos);

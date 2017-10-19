@@ -72,7 +72,7 @@ def Visualize(grid, path_list):
 		game_objects = [(grid.pressurePos,'pad-off'), ([grid.teleportalPos],'portal'), (grid.unmovables,'unmovable'), (rocks,'rock'), ([robotPos],'r2-d2')]
 		for idx,obj in enumerate(game_objects):
 			for (x, y) in obj[0]:
-				#Draw activate pads
+				# Draw activated pads
 				if idx == 0 and (x, y) in active_pads:
 					PlaceObject(x, y, 'pad-on')
 				else:

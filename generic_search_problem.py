@@ -35,7 +35,7 @@ def general_search(problem, q_function):
         del queue[0]
         search_length += 1
 
-        #print("%s  %s" % (node.state.position, list(map(lambda x: x[2], node.state.rock_positions))))
+        # print("%s  %s" % (node.state.position, list(map(lambda x: x[2], node.state.rock_positions))))
 
         if(problem.goal_test(node.state)):
             return (node, search_length)
